@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NetoraPN</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08060f;--card:#160f21;--line:#2c2040;--tx:#fbeef5;--mu:#a999b6;--p1:#f4b6d4;--p2:#d9709f;--p3:#b8457f;--neon:#ff4fc4;--grad:linear-gradient(135deg,#f0b4d2,#b8457f)}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%}
+body{font-family:Lexend,system-ui,sans-serif;background:var(--bg);color:var(--tx);padding:0 14px calc(92px + env(safe-area-inset-bottom,0px));padding-top:env(safe-area-inset-top,0px);
+background-image:radial-gradient(1px 1px at 20px 30px,#fffc,transparent),radial-gradient(1px 1px at 90px 120px,#fff9,transparent),radial-gradient(1.5px 1.5px at 150px 60px,#f4b6d4cc,transparent),radial-gradient(1px 1px at 60px 170px,#fff8,transparent),radial-gradient(1px 1px at 180px 190px,#fffa,transparent);background-size:200px 220px;background-attachment:fixed}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--p1);outline-offset:2px}
+.top{display:flex;align-items:center;gap:10px;padding:14px 2px 6px}
+.ava{width:40px;height:40px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:800;color:#2a0f1f}
+.top b{display:block;font-size:15px}.top small{color:var(--mu);font-size:12px}
+h1{font-weight:800;font-size:34px;letter-spacing:-.5px;background:linear-gradient(#fff,#f0a9cd);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center}
+h2{font-size:20px;font-weight:600;margin:18px 2px 10px}
+.mu{color:var(--mu);font-size:14px;line-height:1.5}
+.c{text-align:center}
+.orb{width:148px;height:148px;margin:18px auto 14px;border-radius:50%;border:3px solid var(--neon);display:grid;place-items:center;
+background:radial-gradient(circle at 35% 30%,#4a3d9a88,transparent 45%),radial-gradient(circle at 70% 70%,#ff4fc455,transparent 45%),#0a0716;
+box-shadow:0 0 22px #ff4fc4aa,0 0 70px #ff4fc455,inset 0 0 30px #ff4fc455}
+.orb span{font-weight:800;font-size:22px;line-height:1;text-align:center;letter-spacing:1px;color:#8fd8ee;text-shadow:0 0 10px #5ad;-webkit-text-stroke:1px #d56aa5}
+.off .orb{border-color:#6b3d5a;box-shadow:0 0 20px #6b3d5a88;filter:saturate(.5)}
+.btn{display:block;width:100%;padding:15px;border-radius:16px;background:var(--grad);color:#2a0f1f;font-weight:600;font-size:15px;text-align:center}
+.btn.g{background:#0d0916;color:var(--tx);border:1px solid var(--line)}
+.btn:active{transform:scale(.98)}
+.row{display:flex;gap:10px}
+.promo{margin-top:18px;border-radius:22px;padding:16px;background:linear-gradient(120deg,#ecb0cf,#b8457f);color:#25101b;display:flex;gap:12px;align-items:center}
+.promo b{font-size:16px;display:block}.promo small{font-size:12.5px;opacity:.85}
+.promo button{background:#240f1c;color:var(--p1);padding:11px 14px;border-radius:14px;font-weight:600;font-size:13px;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 4px;text-align:center}
+.stat b{display:block;font-size:15px}.stat small{font-size:10.5px;color:var(--mu)}
+.plans{display:grid;gap:10px}
+.plan{display:flex;align-items:center;justify-content:space-between;padding:16px;border-radius:18px;background:var(--card);border:1px solid var(--line);text-align:left;width:100%}
+.plan.on{border-color:var(--p1);box-shadow:0 0 0 1px var(--p1),0 0 24px #ff4fc433}
+.plan b{font-size:24px}.plan small{color:var(--mu);font-size:12.5px;display:block;margin-top:2px}
+.tag{font-size:11px;background:var(--grad);color:#2a0f1f;padding:4px 9px;border-radius:99px;font-weight:600}
+.box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:10px}
+.key{font-size:12px;word-break:break-all;color:var(--p1);background:#0d0916;border:1px dashed var(--line);border-radius:12px;padding:10px;margin:10px 0}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.chip{padding:9px 16px;border-radius:99px;border:1px solid var(--line);color:var(--mu);font-size:14px;white-space:nowrap}
+.chip.on{background:var(--grad);color:#2a0f1f;border-color:transparent;font-weight:600}
+.step{display:flex;gap:12px;margin:14px 0}
+.step i{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--p2);color:var(--p1);display:grid;place-items:center;font-style:normal;font-size:13px}
+.step p{font-size:14px;line-height:1.5}.step p span{color:var(--mu)}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:8px}
+summary{cursor:pointer;font-size:14px;font-weight:600}details p{margin-top:8px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:#0c0814ee;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--mu);padding:4px 0}
+nav button.on{color:var(--p1)}nav svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.toast{position:fixed;left:50%;bottom:96px;transform:translate(-50%,20px);background:var(--grad);color:#2a0f1f;padding:11px 18px;border-radius:14px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.25s}
+.toast.s{opacity:1;transform:translate(-50%,0)}
+
+.prices{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.pc{flex:1;max-width:110px;padding:11px 4px;border-radius:16px;background:var(--card);border:1px solid var(--line);text-align:center}
+.pc b{display:block;font-size:19px}.pc small{font-size:12px;color:var(--mu)}
+.pc.on{border-color:var(--p1);box-shadow:0 0 0 1px var(--p1),0 0 20px #ff4fc433}
+.dl{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;margin-bottom:12px}
+.dl h3{font-size:16px;font-weight:600;margin-bottom:12px}
+.dl a,.dl button.lk{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;text-align:left;padding:12px 14px;margin-bottom:8px;border-radius:14px;border:1px solid var(--line);background:#1d1429;color:var(--p1);font-size:14px;text-decoration:none}
+.dl .lk:last-child{margin-bottom:0}.dl .lk:active{background:#2a1c3b}
+.dl .lk svg{flex:none;width:16px;height:16px;stroke:var(--mu);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.pay{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:13px 14px;margin-bottom:8px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.pay i{font-style:normal;font-size:22px;width:30px;text-align:center}
+.pay b{display:block;font-size:14px;font-weight:600}.pay small{color:var(--mu);font-size:12px}
+.pay .dot{margin-left:auto;flex:none;width:18px;height:18px;border-radius:50%;border:2px solid var(--line)}
+.pay.on{border-color:var(--p1);box-shadow:0 0 0 1px var(--p1)}
+.pay.on .dot{border-color:var(--p1);background:radial-gradient(var(--p1) 45%,transparent 50%)}
+
+.bal{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;padding:12px 14px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.bal small{display:block;color:var(--mu);font-size:12px}.bal b{font-size:22px}
+.bal button{background:var(--grad);color:#2a0f1f;font-weight:600;font-size:14px;padding:11px 16px;border-radius:14px}
+.amt{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.amt button{padding:14px 0;border-radius:14px;background:var(--card);border:1px solid var(--line);font-weight:600}
+.amt button.on{border-color:var(--p1);box-shadow:0 0 0 1px var(--p1)}
+.inp{width:100%;margin-top:8px;padding:14px;border-radius:14px;background:#0d0916;border:1px solid var(--line);color:var(--tx);font:inherit;font-size:16px}
+.back{color:var(--mu);font-size:14px;padding:8px 2px}
+
+.tips{margin-top:10px;padding:14px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.tips b{font-size:14px}.tips p{font-size:12.5px;color:var(--mu);margin:3px 0 10px;line-height:1.45}
+.tr{display:flex;align-items:center;gap:8px;margin-top:8px}
+.tr span{width:74px;font-size:13px;flex:none}
+.tr button{flex:1;padding:10px 4px;border-radius:12px;border:1px solid var(--line);background:#1d1429;color:var(--p1);font-size:13px;font-weight:600}
+.feat{list-style:none;padding:0;margin:16px 4px 0;font-size:14px;line-height:1.9}
+
+.conn{margin-top:14px;padding:16px;border-radius:22px;border:1px solid var(--p2);background:linear-gradient(160deg,#2c1738,#160f21);box-shadow:0 0 28px #ff4fc433}
+.conn>b{font-size:17px}.conn>p{font-size:13px;color:var(--mu);line-height:1.5;margin:6px 0 14px}
+.conn details{margin:12px 0 0;background:#0d0916}
+.conn ol{margin:8px 0 0 18px;font-size:13px;color:var(--mu);line-height:1.6}
+#redir{display:none;padding-top:40px;text-align:center}
+.redir #redir{display:block}.redir .top,.redir main,.redir nav{display:none}
+#redir .btn{margin-top:10px;text-decoration:none}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="top"><div class="ava" id="ava">N</div><div><b id="uname">Гость</b><small id="usince">NetoraPN</small></div></div>
+<main id="app"></main>
+<nav id="nav"></nav>
+<div class="toast" id="toast"></div>
+<div id="redir"><div class="orb"><span>NETORA<br>PN</span></div><h1>Открываем приложение</h1>
+<p class="mu" style="margin:10px 0 20px">Подтвердите добавление подписки в приложении. Если оно не открылось, нажмите кнопку ниже.</p>
+<a class="btn" id="rdGo" href="#">Открыть в приложении</a>
+<button class="btn g" id="rdCopy">Скопировать ключ вручную</button></div>
+<script>
+(function(){
+  var g = new URLSearchParams(location.search).get('go');
+  if (!g || !/^(happ|incy):\/\/(add|import)\//i.test(g)) return;   // только наши deep-link'и
+  window.__redir = 1; document.documentElement.classList.add('redir');
+  document.getElementById('rdGo').href = g;
+  document.getElementById('rdCopy').onclick = function(){ var k = g.replace(/^(happ|incy):\/\/(add|import)\//i,''); navigator.clipboard && navigator.clipboard.writeText(k); this.textContent = 'Ключ скопирован'; };
+  setTimeout(function(){ location.href = g; }, 300);
+})();
+</script>
+
+<script>
+const tg = window.Telegram && Telegram.WebApp;
+if (tg) { tg.ready(); tg.expand(); try { tg.setHeaderColor('#08060f'); tg.setBackgroundColor('#08060f'); } catch(e){} }
+const user = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+if (user) { document.getElementById('uname').textContent = user.first_name || 'Гость'; document.getElementById('ava').textContent = (user.first_name||'N')[0].toUpperCase(); }
+
+const PLANS = [
+  {m:1, p:80,  l:'1 мес.', n:'80 ₽ в месяц'},
+  {m:2, p:150, l:'2 мес.', n:'75 ₽ в месяц'},
+  {m:3, p:210, l:'3 мес.', n:'70 ₽ в месяц', best:true}
+];
+const PAY = [
+  {id:'sbp', n:'QR-код (СБП)', d:'Отсканируйте код в приложении любого банка', i:'📲'},
+  {id:'card', n:'Карта российского банка', d:'Visa, Mastercard, МИР, выпущенные в РФ', i:'💳'}
+];
+const GUIDE = {
+  Android:{app:'Happ или v2rayTun', store:'Google Play'},
+  iPhone:{app:'INCY или Happ', store:'App Store'},
+  Windows:{app:'Happ или Hiddify', store:'сайта приложения'},
+  macOS:{app:'Happ, INCY или Hiddify', store:'сайта приложения'}
+};
+const U = {
+  hAppStore:'https://apps.apple.com/us/app/happ-proxy-utility/id6504287215',
+  incy:'https://apps.apple.com/ru/app/incy/id6756943388',
+  hPlay:'https://play.google.com/store/apps/details?id=com.happproxy',
+  hApk:'https://github.com/Happ-proxy/happ-android/releases/latest/download/Happ.apk',
+  hWin:'https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe',
+  hDmg:'https://github.com/Happ-proxy/happ-desktop/releases/latest/download/Happ.macOS.universal.dmg',
+  hGit:'https://github.com/Happ-proxy/happ-desktop/releases/latest',
+  hidPlay:'https://play.google.com/store/apps/details?id=app.hiddify.com',
+  hidGit:'https://github.com/hiddify/hiddify-app/releases/latest',
+  incyPlay:'https://play.google.com/store/apps/details?id=llc.itdev.incy',
+  v2n:'https://github.com/2dust/v2rayN/releases/latest'
+};
+const DL = [
+  ['📱','iPhone / iPad',[['INCY — App Store',U.incy],['Happ — App Store',U.hAppStore]]],
+  ['🤖','Android',[['Happ — Google Play',U.hPlay],['INCY — Google Play',U.incyPlay],['Happ — APK (без Google Play)',U.hApk],['Hiddify — Google Play',U.hidPlay]]],
+  ['🪟','Windows',[['Happ — установщик (x64)',U.hWin],['Hiddify — GitHub',U.hidGit],['v2rayN — GitHub',U.v2n]]],
+  ['🍎','macOS',[['Happ — .dmg',U.hDmg],['INCY — App Store',U.incy],['Hiddify — GitHub',U.hidGit]]],
+  ['🐧','Linux',[['Happ — GitHub (.deb / .rpm)',U.hGit],['Hiddify — GitHub (AppImage / deb / rpm)',U.hidGit]]],
+  ['📺','Телевизоры',[['Android TV — Happ (Google Play)',U.hPlay],['Apple TV — INCY (App Store)',U.incy]]]
+];
+const FAQ = [
+  ['Не подключается', 'Обновите подписку в приложении, затем выключите и включите VPN. Если не помогло, смените сеть (Wi-Fi или мобильный интернет) и напишите в поддержку.'],
+  ['Сколько устройств можно подключить', 'Один ключ работает на ваших устройствах. Установите приложение на каждом и добавьте один и тот же ключ.'],
+  ['Как продлить подписку', 'Откройте «Тарифы», выберите срок и оплатите. Дни добавятся к текущей подписке.'],
+  ['Как работает бесплатный тест', 'Три дня со всеми возможностями, без оплаты. Один раз на аккаунт.']
+];
+const S = {tab:'home', top:150, plan:3, pay:'sbp', os:'Android', sub:null, balance:0};
+try { const x = JSON.parse(localStorage.getItem('npn')||'null'); if (x) { x.sub && (x.sub.until = new Date(x.sub.until)); Object.assign(S, x); } } catch(e){}
+if (!PAY.some(x=>x.id===S.pay) && S.pay!=='balance') S.pay='sbp';
+const save = () => { try { localStorage.setItem('npn', JSON.stringify(S)); } catch(e){} };
+
+const $ = id => document.getElementById(id);
+const fmt = d => new Date(d).toLocaleDateString('ru-RU',{day:'numeric',month:'short',year:'numeric'});
+const active = () => S.sub && new Date(S.sub.until) > new Date();
+const hap = t => { try { tg.HapticFeedback.notificationOccurred(t||'success'); } catch(e){} };
+function toast(t){ const el=$('toast'); el.textContent=t; el.classList.add('s'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('s'),1800); }
+function copy(txt,msg){ (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(()=>{toast(msg||'Ключ скопирован');hap();}).catch(()=>{const t=document.createElement('textarea');t.value=txt;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();toast(msg||'Ключ скопирован');}); }
+const rnd = () => Math.random().toString(36).slice(2,10);
+const KEY = () => S.sub ? S.sub.key : '';
+
+function activate(days, label){
+  const base = active() ? new Date(S.sub.until) : new Date();
+  base.setDate(base.getDate()+days);
+  S.sub = {until:base, label, key:(S.sub&&S.sub.key)||('https://sub.netorapn.com/'+rnd()+rnd())};
+  save();
+}
+function startTest(){
+  if (S.testUsed) { toast('Тест уже использован'); return; }
+  S.testUsed = true; activate(3,'Тест'); hap(); toast('Тест на 3 дня включён'); go('keys');
+}
+function buy(){
+  const p = PLANS.find(x=>x.m===S.plan);
+  const m = S.pay==='balance' ? {n:'Баланс'} : PAY.find(x=>x.id===S.pay);
+  if (S.pay==='balance' && S.balance < p.p) { toast('Не хватает '+(p.p-S.balance)+' ₽, пополните баланс'); go('topup'); return; }
+  const ok = () => { if (S.pay==='balance') S.balance -= p.p; activate(p.m*30, p.l); hap(); toast('Подписка оформлена'); go('keys'); };
+  // Здесь подключите свой бэкенд: создайте платёж и откройте ссылку на оплату.
+  tg && tg.showConfirm ? tg.showConfirm('Оплатить '+p.p+' ₽ за '+p.l+' ('+m.n+')?', y=>y&&ok()) : ok();
+}
+function topup(){
+  const v = Math.floor(+S.top), m = PAY.find(x=>x.id===S.pay) || PAY[0];
+  if (!(v >= 50)) { toast('Минимальная сумма — 50 ₽'); return; }
+  const ok = () => { S.balance += v; save(); hap(); toast('Баланс пополнен на '+v+' ₽'); go('home'); };
+  // Здесь подключите свой бэкенд: создайте платёж на сумму v и откройте QR-код или форму карты.
+  tg && tg.showConfirm ? tg.showConfirm('Пополнить баланс на '+v+' ₽ ('+m.n+')?', y=>y&&ok()) : ok();
+}
+function connect(app){
+  if (!active()) { toast('Сначала получите подписку'); go('plans'); return; }
+  const dl = (app==='incy' ? 'incy://add/' : 'happ://add/') + KEY();
+  // Ссылка вида happ:// напрямую из Telegram часто не открывается, поэтому идём через эту же страницу:
+  // она в браузере телефона мгновенно перекидывает на приложение (см. блок #redir).
+  const url = location.origin + location.pathname + '?go=' + encodeURIComponent(dl);
+  tg && tg.openLink ? tg.openLink(url) : (location.href = dl);
+}
+function connCard(){
+  return `<div class="conn"><b>⚡ Подключение в один клик</b>
+    <p>Нажмите кнопку: откроется приложение, и ключ добавится само. Копировать ничего не нужно.</p>
+    <button class="btn" data-conn="incy">Подключить в INCY</button>
+    <button class="btn g" style="margin-top:8px" data-conn="happ">Подключить в Happ</button>
+    <details><summary>Как это работает</summary>
+      <ol><li>Выберите приложение, которое уже установили.</li>
+      <li>Откроется страница-переходник и сразу передаст ваш ключ в приложение.</li>
+      <li>Подтвердите добавление подписки и нажмите кнопку подключения.</li></ol>
+      <p class="mu" style="margin-top:8px">Приложение должно быть установлено заранее. Если оно не открылось, скопируйте ключ в разделе «Ключи» и вставьте вручную.</p>
+    </details></div>`;
+}
+function support(){ const u='https://t.me/netorapn_support'; tg && tg.openTelegramLink ? tg.openTelegramLink(u) : window.open(u,'_blank'); }
+
+const ICON = {
+  home:'<path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/>',
+  plans:'<rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 11h18M7 16h3"/>',
+  keys:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>',
+  apps:'<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',
+  help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 115 0c0 1.7-2.5 2-2.5 3.5M12 17h.01"/>'
+};
+const TABS = [['home','Главная'],['plans','Тарифы'],['keys','Ключи'],['apps','Скачать'],['help','Помощь']];
+
+const V = {
+  home(){
+    const a = active();
+    return `<div class="bal"><div><small>Баланс</small><b>${S.balance} ₽</b></div><button data-go="topup">Пополнить баланс</button></div>
+    <div class="tips"><b>Сначала установите приложение</b><p>INCY и Happ — самые простые: вставили ключ, нажали кнопку, и всё работает.</p>
+      <div class="tr"><span>🤖 Android</span><button data-url="${U.incyPlay}">INCY</button><button data-url="${U.hPlay}">Happ</button></div>
+      <div class="tr"><span>🍎 iPhone</span><button data-url="${U.incy}">INCY</button><button data-url="${U.hAppStore}">Happ</button></div></div>
+    <div class="${a?'':'off'}"><div class="orb"><span>NETORA<br>PN</span></div>
+    <h1>NetoraPN</h1>
+    <p class="c" style="font-weight:600;margin-top:6px">Ключ к свободному интернету</p>
+    <p class="mu c" style="margin:8px 0 18px">${a ? 'Подписка активна до '+fmt(S.sub.until) : 'Сайты, соцсети и сервисы снова работают быстро и стабильно на любых устройствах.'}</p></div>
+    ${a ? `<button class="btn" data-go="keys">Подключить</button>` : `<button class="btn" data-act="test">Попробовать бесплатно</button>`}
+    <div class="row" style="margin-top:10px"><button class="btn g" data-go="plans">Тарифы</button><button class="btn g" data-go="help">Как подключить</button></div>
+    ${a?'':`<ul class="feat"><li>✅ Свободный доступ к любым сайтам</li><li>✅ Защита данных и безопасный Wi-Fi</li><li>✅ Быстрая и стабильная связь</li><li>✅ Смартфоны и ПК</li></ul>`}
+    ${!S.testUsed && !a ? `<div class="promo"><div style="flex:1"><b>🎁 Бесплатный тест — 3 дня</b><small>Подключение занимает меньше минуты</small></div><button data-act="test">Начать тест</button></div>`:''}
+    <div class="stats">
+      <div class="stat"><b>${S.sub?1:0}</b><small>подписки</small></div>
+      <div class="stat"><b>${a?fmt(S.sub.until).replace(/ г\.$/,''):'—'}</b><small>до</small></div>
+      <div class="stat"><b>${S.balance} ₽</b><small>баланс</small></div>
+    </div>`;
+  },
+  plans(){
+    const p = PLANS.find(x=>x.m===S.plan);
+    return `<h2>Выберите срок</h2><div class="plans">${PLANS.map(x=>`
+      <button class="plan ${x.m===S.plan?'on':''}" data-plan="${x.m}"><span><b>${x.p} ₽</b><small>${x.l} · ${x.n}</small></span>${x.best?'<span class="tag">Выгоднее всего</span>':''}</button>`).join('')}</div>
+      <h2>Способ оплаты</h2>
+      ${PAY.concat([{id:'balance',n:'Баланс',d:'Доступно '+S.balance+' ₽',i:'👛'}]).map(m=>`<button class="pay ${m.id===S.pay?'on':''}" data-pay="${m.id}"><i>${m.i}</i><span><b>${m.n}</b><small>${m.d}</small></span><span class="dot"></span></button>`).join('')}
+      <p class="mu" style="margin:12px 2px 14px">Все серверы, без ограничения скорости, на всех ваших устройствах. Дни добавляются к текущей подписке.</p>
+      <button class="btn" data-act="buy">Оплатить ${p.p} ₽</button>`;
+  },
+  keys(){
+    if (!S.sub) return `<h2>Мои ключи</h2><div class="box c"><p class="mu">У вас пока нет подписки. Начните с бесплатного теста или выберите тариф.</p><button class="btn" style="margin-top:14px" data-act="test">Попробовать бесплатно</button></div>`;
+    const a = active();
+    return `<h2>Мои ключи</h2>${a?connCard():''}<div class="box" style="margin-top:12px"><b>NetoraPN · ${S.sub.label}</b>
+      <p class="mu">${a?'Активна до '+fmt(S.sub.until):'Срок истёк '+fmt(S.sub.until)}</p>
+      <div class="key">${S.sub.key}</div>
+      <div class="row"><button class="btn" data-act="copy">Скопировать ключ</button><button class="btn g" data-go="help">Как подключить</button></div></div>
+      ${a?'':`<button class="btn" data-go="plans">Продлить</button>`}`;
+  },
+  topup(){
+    return `<button class="back" data-go="home">← Назад</button>
+    <h2 style="margin-top:4px">Пополнить баланс</h2>
+    <p class="mu" style="margin:-4px 2px 14px">Сейчас на балансе ${S.balance} ₽. Выберите сумму или введите свою.</p>
+    <div class="amt">${[80,150,210,300,500,1000].map(v=>`<button class="${v===S.top?'on':''}" data-amt="${v}">${v} ₽</button>`).join('')}</div>
+    <input class="inp" id="amtIn" type="number" inputmode="numeric" min="50" placeholder="Другая сумма, от 50 ₽" value="${[80,150,210,300,500,1000].includes(S.top)?'':S.top}">
+    <h2>Способ оплаты</h2>
+    ${PAY.map(m=>`<button class="pay ${m.id===S.pay?'on':''}" data-pay="${m.id}"><i>${m.i}</i><span><b>${m.n}</b><small>${m.d}</small></span><span class="dot"></span></button>`).join('')}
+    <button class="btn" style="margin-top:6px" data-act="topup">Пополнить на <span id="amtBtn">${S.top}</span> ₽</button>`;
+  },
+  apps(){
+    return `<h2>Скачать приложение</h2><p class="mu" style="margin:-4px 2px 14px">Выберите своё устройство и установите любое приложение из списка. Затем добавьте свой ключ.</p>
+    ${DL.map(d=>`<div class="dl"><h3>${d[0]} ${d[1]}</h3>${d[2].map(l=>`<button class="lk" data-url="${l[1]}"><span>${l[0]}</span><svg viewBox="0 0 24 24"><path d="M7 17L17 7M8 7h9v9"/></svg></button>`).join('')}</div>`).join('')}
+    <button class="btn g" data-go="help">Как подключиться</button>`;
+  },
+  help(){
+    const g = GUIDE[S.os];
+    return `<h2>Помощь с подключением</h2>
+    <div class="chips">${Object.keys(GUIDE).map(o=>`<button class="chip ${o===S.os?'on':''}" data-os="${o}">${o}</button>`).join('')}</div>
+    <div class="box" style="margin-top:12px">
+      <div class="step"><i>1</i><p>Установите приложение<br><span>${g.app} из ${g.store}.</span></p></div>
+      <button class="btn g" style="margin-bottom:6px" data-go="apps">Перейти к скачиванию</button>
+      <div class="step"><i>2</i><p>Скопируйте ключ<br><span>Раздел «Ключи» → «Скопировать ключ».</span></p></div>
+      <div class="step"><i>3</i><p>Добавьте подписку<br><span>В приложении нажмите «+» → «Вставить из буфера обмена».</span></p></div>
+      <div class="step"><i>4</i><p>Включите VPN<br><span>Нажмите большую кнопку подключения и разрешите создание VPN.</span></p></div>
+      <button class="btn" data-act="copy">Скопировать ключ</button></div>
+    <h2>Частые вопросы</h2>${FAQ.map(f=>`<details><summary>${f[0]}</summary><p class="mu">${f[1]}</p></details>`).join('')}
+    <button class="btn g" style="margin-top:6px" data-act="support">Написать в поддержку</button>`;
+  }
+};
+
+function go(t){ if (t==='topup' && S.pay==='balance') S.pay='sbp'; S.tab=t; render(); window.scrollTo(0,0); }
+function render(){
+  $('app').innerHTML = V[S.tab]();
+  $('nav').innerHTML = TABS.map(([k,l])=>`<button class="${k===S.tab?'on':''}" data-go="${k}"><svg viewBox="0 0 24 24">${ICON[k]}</svg>${l}</button>`).join('');
+  $('usince').textContent = active() ? 'Подписка активна' : 'NetoraPN';
+}
+document.addEventListener('click', e=>{
+  const t = e.target.closest('[data-go],[data-plan],[data-pay],[data-amt],[data-conn],[data-os],[data-act],[data-url]'); if(!t) return;
+  const d = t.dataset;
+  if (d.url) { tg && tg.openLink ? tg.openLink(d.url) : window.open(d.url,'_blank'); }
+  else if (d.conn) connect(d.conn);
+  else if (d.amt) { S.top=+d.amt; render(); }
+  else if (d.act==='topup') topup();
+  else if (d.pay) { S.pay=d.pay; save(); try{tg.HapticFeedback.selectionChanged();}catch(_){} render(); }
+  else if (d.go) go(d.go);
+  else if (d.plan) { S.plan=+d.plan; try{tg.HapticFeedback.selectionChanged();}catch(_){} render(); }
+  else if (d.os) { S.os=d.os; render(); }
+  else if (d.act==='test') startTest();
+  else if (d.act==='buy') buy();
+  else if (d.act==='support') support();
+  else if (d.act==='copy') { if (KEY()) copy(KEY()); else { toast('Сначала получите ключ'); go('plans'); } }
+});
+document.addEventListener('input', e=>{
+  if (e.target.id!=='amtIn') return;
+  S.top = +e.target.value || 0;
+  const b = $('amtBtn'); if (b) b.textContent = S.top;
+  document.querySelectorAll('.amt button').forEach(x=>x.classList.toggle('on', +x.dataset.amt===S.top));
+});
+if (!window.__redir) render();
+</script>
+</body>
+</html>
